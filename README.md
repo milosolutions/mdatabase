@@ -117,7 +117,7 @@ QObject::connect(&dbManager, &SqliteMigrations::databaseUpdateStarted,
 QObject::connect(&dbManager, &SqliteMigrations ::databaseUpdateError,
                     &app, []{ qInfo() << "Database update error!"; });
 QObject::connect(&dbManager, &SqliteMigrations::databaseReady,
-                    &app, []{qCInfo(migrations) << "Database ready!"; });
+                    &app, []{qCInfo(mdatabase) << "Database ready!"; });
 
 // setting up database, performing migrations if needed
 dbManager.setupDatabase();

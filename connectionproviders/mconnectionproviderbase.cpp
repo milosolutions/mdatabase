@@ -7,10 +7,10 @@
 #include <QSqlError>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(migrations)
+Q_DECLARE_LOGGING_CATEGORY(mdatabase)
 
 MDatabase::ConnectionProviderBase::ConnectionProviderBase(const QString &databaseType)
-    : mDatabaseType(databaseType)
+    : m_databaseType(databaseType)
 {}
 
 
@@ -35,7 +35,7 @@ QSqlDatabase MDatabase::ConnectionProviderBase::databaseConnection(
     }
 
     if (!db.isOpen() && !db.open()) {
-        qCCritical(migrations) << "Cannot open database connection. Cannot proceed.";
+        qCCritical(mdatabase) << "Cannot open database connection. Cannot proceed.";
     }
     return db;
 }
@@ -43,14 +43,14 @@ QSqlDatabase MDatabase::ConnectionProviderBase::databaseConnection(
 QSqlDatabase MDatabase::ConnectionProviderBase::createDatabaseConnection(
                                         const QString &connectionName) const
 {
-    return QSqlDatabase::addDatabase(mDatabaseType, 
+    return QSqlDatabase::addDatabase(m_databaseType,
                         baseConnectionName(connectionName));
 }
 
 QString MDatabase::ConnectionProviderBase::baseConnectionName(
                             const QString &connectionName) const
 {
-    return QString("%1_%2").arg(mDatabaseType, connectionName);
+    return QString("%1_%2").arg(m_databaseType, connectionName);
 }
 
 QString MDatabase::ConnectionProviderBase::extendedConnectionName(

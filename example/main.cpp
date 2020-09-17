@@ -14,7 +14,7 @@
 #include <connectionproviders/mconnectionprovidersqlite.h>
 #include <connectionproviders/mconnectionprovidersqlitecipher.h>
 
-Q_DECLARE_LOGGING_CATEGORY(migrations)
+Q_DECLARE_LOGGING_CATEGORY(mdatabase)
 
 namespace mdb = MDatabase;
 
@@ -24,10 +24,10 @@ void printUsers(const QSqlDatabase& connection)
     query.prepare("SELECT * FROM `User`;");
     mdb::Helpers::execQuery(query);
 
-    qCDebug(migrations) << "USERS:";
+    qCDebug(mdatabase) << "USERS:";
     while (query.next()) {
         auto userName = query.value(1).toString();
-        qCDebug(migrations) << userName;
+        qCDebug(mdatabase) << userName;
     }
 }
 
@@ -44,8 +44,8 @@ int main(int argc, char *argv[])
 
 
     // **** SQLITE 3 ****
-    qCDebug(migrations) << "==================================";
-    qCDebug(migrations) << "SQLite3 example:";
+    qCDebug(mdatabase) << "==================================";
+    qCDebug(mdatabase) << "SQLite3 example:";
     // setting up SQLite db path
     mdb::ConnectionProviderSQLite::instance().setupConnectionData(
                 QStandardPaths::writableLocation(
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
                      &app, []{ qInfo() << "Database update error!"; });
     QObject::connect(&dbManager, &SqliteMigrations::databaseReady,
                      &app, [&]{
-                        qCInfo(migrations) << "Database ready!";
+                        qCInfo(mdatabase) << "Database ready!";
                         printUsers(dbManager.provider().databaseConnection());
                      });
     dbManager.setupDatabase();
@@ -70,8 +70,8 @@ int main(int argc, char *argv[])
 
     // **** SQLITE 3 Cipher ****
 
-    qCDebug(migrations) << "==================================";
-    qCDebug(migrations) << "SQlite3Cipher example:";
+    qCDebug(mdatabase) << "==================================";
+    qCDebug(mdatabase) << "SQlite3Cipher example:";
 
     auto& cipher= mdb::ConnectionProviderSQLiteCipher::instance();
     if (cipher.checkPluginAvailable()) {
@@ -86,12 +86,12 @@ int main(int argc, char *argv[])
                          &app, []{ qInfo() << "Ciphered database update error!"; });
         QObject::connect(&cipherManager, &SqliteCipherMigrations::databaseReady,
                          &app, [&]{
-                            qCInfo(migrations) << "Ciphered database ready!";
+                            qCInfo(mdatabase) << "Ciphered database ready!";
                             printUsers(cipherManager.provider().databaseConnection());
                          });
         cipherManager.setupDatabase();
     } else {
-        qCCritical(migrations) << "SQLite3 Cipher Plugin was not found!!!"
+        qCCritical(mdatabase) << "SQLite3 Cipher Plugin was not found!!!"
                                << "Check mmigraions/scripts/build_sqlitecipherplugin.sh "
                                   "script for details";
 

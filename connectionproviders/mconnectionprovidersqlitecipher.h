@@ -19,7 +19,7 @@ public:
     virtual void setupConnectionData(const QString &databasePath,
                 const QString &connectionName = QLatin1String(QSqlDatabase::defaultConnection));
 private:
-    QString mPassword;
+    QString m_password;
 };
 }
 #endif

@@ -18,7 +18,7 @@ public:
                         QLatin1String(QSqlDatabase::defaultConnection)) const;
 
 protected:
-    QString mDatabaseType;
+    QString m_databaseType;
 
     virtual QSqlDatabase createDatabaseConnection(const QString &connectionName) const;
 

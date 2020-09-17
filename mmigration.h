@@ -22,9 +22,9 @@ public:
     QVersionNumber number() const;
 
 private:
-    QVersionNumber mNumber;
-    std::function<bool(QSqlDatabase &)> mForward;
-    std::function<bool(QSqlDatabase &)> mBackward;
+    QVersionNumber m_number;
+    std::function<bool(QSqlDatabase &)> m_forward;
+    std::function<bool(QSqlDatabase &)> m_backward;
 
     void runCommon(QSqlDatabase &database) const;
 };
@@ -47,9 +47,9 @@ public:
 
 private:
     MigrationBuilder() = default;
-    Helpers::Queries mForward;
-    Helpers::Queries mBackward;
-    QVersionNumber mVersion;
+    Helpers::Queries m_forward;
+    Helpers::Queries m_fackward;
+    QVersionNumber m_version;
 };
 
 }

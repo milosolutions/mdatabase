@@ -14,16 +14,15 @@ public:
     virtual void setupDatabase() = 0;
 
 signals:
-    void databaseReady();
-
+    void databaseReady() const;
     void databaseUpdateStarted() const;
     void databaseUpdateError() const;
 
 protected:
-    bool mSetupDone = false;
+    bool m_setupDone = false;
 
-    QFuture<bool> mMigrationRunner;
-    QFutureWatcher<bool> mMigrationProgress;
+    QFuture<bool> m_migrationRunner;
+    QFutureWatcher<bool> m_migrationProgress;
 
     void onMigrationFinished(bool result);
 };

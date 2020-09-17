@@ -10,27 +10,27 @@ namespace MDatabase {
     public:
         static const QVersionNumber& latestDbVersion()
         {
-            Q_ASSERT_X(!sVersion.isNull(), Q_FUNC_INFO,
+            Q_ASSERT_X(!m_version.isNull(), Q_FUNC_INFO,
                        "Migrations were no set properly, check manual");
-            return sVersion;
+            return m_version;
         }
 
         static const QVector<Migration>& migrations()
         {
-            Q_ASSERT_X(!sMigrations.empty(), Q_FUNC_INFO,
+            Q_ASSERT_X(!m_migrations.empty(), Q_FUNC_INFO,
                        "Migrations were no set properly, check manual");
-            return sMigrations;
+            return m_migrations;
         }
 
         static void init(const QVersionNumber& version, const QVector<Migration>& migrations)
         {
-            sVersion = version;
-            sMigrations = migrations;
+            m_version = version;
+            m_migrations = migrations;
         }
 
     private:
-        static QVersionNumber sVersion;
-        static QVector<Migration> sMigrations;
+        static QVersionNumber m_version;
+        static QVector<Migration> m_migrations;
     };
 }
 

@@ -6,7 +6,7 @@
 
 #include <QLoggingCategory>
 
-Q_LOGGING_CATEGORY(migrations, "MMigrations")
+Q_LOGGING_CATEGORY(mdatabase, "MDatabase")
 
 bool MDatabase::Helpers::hasError(const QSqlQuery &query)
 {
@@ -17,7 +17,7 @@ bool MDatabase::Helpers::execQuery(QSqlQuery &query)
 {
     query.exec();
     if (hasError(query)) {
-        qCWarning(migrations) << "Cannot apply query: (" << query.lastQuery() 
+        qCWarning(mdatabase) << "Cannot apply query: (" << query.lastQuery()
                    << " ) error:" << query.lastError().text();
         return false;
     }

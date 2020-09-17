@@ -37,7 +37,7 @@ namespace MDatabase {
 }
 
 
-class TestMMigrations : public QObject
+class TestMDatabase : public QObject
 {
    Q_OBJECT
 
@@ -51,9 +51,9 @@ private:
     QString mDbPath;
 };
 
-void TestMMigrations::initTestCase()
+void TestMDatabase::initTestCase()
 {
-    QCoreApplication::setApplicationName("MMigrations Test");
+    QCoreApplication::setApplicationName("MDatabase Test");
     QCoreApplication::setOrganizationName("Milo");
 
     mDbPath = QStandardPaths::writableLocation(
@@ -65,12 +65,12 @@ void TestMMigrations::initTestCase()
     SqliteMigrations dbManager;
 }
 
-void TestMMigrations::cleanupTestCase()
+void TestMDatabase::cleanupTestCase()
 {
     QFile::remove(mDbPath);
 }
 
-void TestMMigrations::testMigrationBuilder()
+void TestMDatabase::testMigrationBuilder()
 {
     MDatabase::Migration m = MDatabase::MigrationBuilder::builder()
         .setVersion("0.0.3")
@@ -83,6 +83,6 @@ void TestMMigrations::testMigrationBuilder()
 }
 
 
-QTEST_MAIN(TestMMigrations)
+QTEST_MAIN(TestMDatabase)
 
 #include "tst_migrations.moc"

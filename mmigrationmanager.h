@@ -3,11 +3,11 @@
 
 #include <QSqlDatabase>
 #include <QVersionNumber>
+
 #include <functional>
 #include <type_traits>
 
 #include "connectionproviders/mconnectionproviderbase.h"
-
 #include "mabstractmigrationmanager.h"
 
 template <typename T, typename = void>
@@ -41,9 +41,9 @@ public:
     }
 
 protected:
-    const QString cDbConnectionName;
+    const QString m_dbConnectionName;
 
-    QVersionNumber mDbVersion;
+    QVersionNumber m_dbVersion;
 
     QVersionNumber getVersionNumber() const;
     bool updateDb();
@@ -57,43 +57,41 @@ protected:
 };
 }
 
-
-
 // Migrations Manager implementation
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QLoggingCategory>
+#include <QtConcurrent/QtConcurrent>
 
 #include "mdbhelpers.h"
 #include "mmigration.h"
 #include "mmigrationsdata.h"
-#include <QLoggingCategory>
-#include <QtConcurrent/QtConcurrent>
 
-Q_DECLARE_LOGGING_CATEGORY(migrations)
+Q_DECLARE_LOGGING_CATEGORY(mdatabase)
 namespace MDatabase {
 // Migration manager implementation
 template<class ConnectionProvider, typename Valid>
 MigrationManager<ConnectionProvider, Valid>::MigrationManager(const QString &connectionName)
-    : cDbConnectionName(connectionName)
+    : m_dbConnectionName(connectionName)
 {}
 
 template<class ConnectionProvider, typename Valid>
 void MigrationManager<ConnectionProvider, Valid>::loadVersion()
 {
-    mDbVersion = getVersionNumber();
+    m_dbVersion = getVersionNumber();
 }
 
 template<class ConnectionProvider, typename Valid>
 bool MigrationManager<ConnectionProvider, Valid>::needsUpdate()
 {
-    return (mDbVersion != Migrations::latestDbVersion());
+    return (m_dbVersion != Migrations::latestDbVersion());
 }
 
 template<class ConnectionProvider, typename Valid>
 bool MigrationManager<ConnectionProvider, Valid>::update()
 {
     if (!needsUpdate()) {
-        qCInfo(migrations) << "Database up to date.";
+        qCInfo(mdatabase) << "Database up to date.";
         return true;
     }
 
@@ -103,20 +101,20 @@ bool MigrationManager<ConnectionProvider, Valid>::update()
 template<class ConnectionProvider, typename Valid>
 void MigrationManager<ConnectionProvider, Valid>::setupDatabase()
 {
-    Q_ASSERT_X(!mSetupDone, Q_FUNC_INFO, "Trying to setup database twice");
-    if (!mSetupDone) {
+    Q_ASSERT_X(!m_setupDone, Q_FUNC_INFO, "Trying to setup database twice");
+    if (!m_setupDone) {
         loadVersion();
         if (needsUpdate()) {
             emit databaseUpdateStarted();
 
-            mMigrationRunner = QtConcurrent::run(
+            m_migrationRunner = QtConcurrent::run(
                 std::bind(&MigrationManager::update, this));
-            mMigrationProgress.setFuture(mMigrationRunner);
+            m_migrationProgress.setFuture(m_migrationRunner);
         } else {
             emit databaseReady();
         }
 
-        mSetupDone = true;
+        m_setupDone = true;
     }
 }
 
@@ -126,11 +124,11 @@ QVersionNumber MigrationManager<ConnectionProvider, Valid>::getVersionNumber() c
     static const QLatin1String VersionQuery = 
             QLatin1String("SELECT `version` from `Migrations` ORDER BY `id` DESC LIMIT 1");
 
-    auto query = QSqlQuery(provider().databaseConnection(cDbConnectionName));
+    auto query = QSqlQuery(provider().databaseConnection(m_dbConnectionName));
     query.prepare(VersionQuery);
     MDatabase::Helpers::execQuery(query);
     if (!query.first()) {
-        qCCritical(migrations) << "No version in migration table.";
+        qCCritical(mdatabase) << "No version in migration table.";
         return {};
     }
 
@@ -140,10 +138,10 @@ QVersionNumber MigrationManager<ConnectionProvider, Valid>::getVersionNumber() c
 template<class ConnectionProvider, typename Valid>
 bool MigrationManager<ConnectionProvider, Valid>::updateDb()
 {
-    auto db = provider().databaseConnection(cDbConnectionName);
+    auto db = provider().databaseConnection(m_dbConnectionName);
     auto dbName = db.connectionName();
 
-    if (mDbVersion > Migrations::latestDbVersion()) {
+    if (m_dbVersion > Migrations::latestDbVersion()) {
         // backward
         return applyMigrations(Migrations::migrations().rbegin(), Migrations::migrations().rend(),
             std::bind(Migration::RunBackward, std::placeholders::_1, db), false);
@@ -161,10 +159,10 @@ bool MigrationManager<ConnectionProvider, Valid>::applyMigrations(
                 std::function<bool(const Migration &)> const &handler, bool forward)
 {
     auto start = begin;
-    if (!mDbVersion.isNull()) {
-        start = findMigrationNumber(begin, end, mDbVersion);
+    if (!m_dbVersion.isNull()) {
+        start = findMigrationNumber(begin, end, m_dbVersion);
         if (start == end) {
-            qCCritical(migrations) << "Cannot update database - version missing.";
+            qCCritical(mdatabase) << "Cannot update database - version missing.";
             return false;
         }
         start += (forward ? 1 : 0);
@@ -172,7 +170,7 @@ bool MigrationManager<ConnectionProvider, Valid>::applyMigrations(
 
     auto finish = findMigrationNumber(begin, end, Migrations::latestDbVersion());
     if (finish == end) {
-        qCCritical(migrations) << "Cannot update database - latest version missing.";
+        qCCritical(mdatabase) << "Cannot update database - latest version missing.";
         return false;
     }
     finish += (forward ? 1 : 0);
@@ -190,7 +188,7 @@ It MigrationManager<ConnectionProvider, Valid>::findMigrationNumber(
                 return (migration.number() == number); 
             });
     if (item == end) {
-        qCCritical(migrations) << "Version not found in migrations! Version:" << number;
+        qCCritical(mdatabase) << "Version not found in migrations! Version:" << number;
     }
 
     return item;

@@ -6,7 +6,7 @@
 #include <QDir>
 #include <QLoggingCategory>
 
-Q_DECLARE_LOGGING_CATEGORY(migrations)
+Q_DECLARE_LOGGING_CATEGORY(mdatabase)
 
 MDatabase::ConnectionProviderSQLiteCipher &MDatabase::ConnectionProviderSQLiteCipher::instance()
 {
@@ -22,13 +22,13 @@ MDatabase::ConnectionProviderSQLiteCipher::ConnectionProviderSQLiteCipher() :
 
 void MDatabase::ConnectionProviderSQLiteCipher::setPassword(const QString &password)
 {
-    mPassword = password;
+    m_password = password;
 }
 
 QSqlDatabase MDatabase::ConnectionProviderSQLiteCipher::databaseConnection(const QString &connectionName) const
 {
     auto db = ConnectionProviderBase::databaseConnection(connectionName);
-    db.setPassword(mPassword);
+    db.setPassword(m_password);
     return db;
 }
 
@@ -41,7 +41,7 @@ void MDatabase::ConnectionProviderSQLiteCipher::setupConnectionData(
 
     auto db = createDatabaseConnection(connectionName);
     db.setDatabaseName(databasePath);
-    db.setPassword(mPassword);
+    db.setPassword(m_password);
 }
 
 bool MDatabase::ConnectionProviderSQLiteCipher::checkPluginAvailable() const
