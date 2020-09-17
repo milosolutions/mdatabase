@@ -1,5 +1,4 @@
-#ifndef DBCONNECTIONPROVIDERSQLITECIPHER_H
-#define DBCONNECTIONPROVIDERSQLITECIPHER_H
+#pragma once
 
 #include "mconnectionprovidersqlite.h"
 
@@ -14,12 +13,15 @@ public:
     void setPassword(const QString& password);
 
     virtual QSqlDatabase databaseConnection(const QString &connectionName =
-                        QLatin1String(QSqlDatabase::defaultConnection)) const;
+                        QLatin1String(QSqlDatabase::defaultConnection)) const override;
 
-    virtual void setupConnectionData(const QString &databasePath,
-                const QString &connectionName = QLatin1String(QSqlDatabase::defaultConnection));
+    virtual void setupConnectionData(
+            const QString &databasePath,
+            const QString &connectionName = QLatin1String(
+                QSqlDatabase::defaultConnection)) override;
+
 private:
+    static const QString m_pluginName;
     QString m_password;
 };
 }
-#endif

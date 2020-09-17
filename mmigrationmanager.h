@@ -1,5 +1,4 @@
-#ifndef DBMIGRATIONMANAGER_H
-#define DBMIGRATIONMANAGER_H
+#pragma once
 
 #include <QSqlDatabase>
 #include <QVersionNumber>
@@ -194,4 +193,3 @@ It MigrationManager<ConnectionProvider, Valid>::findMigrationNumber(
     return item;
 }
 }
-#endif // DBMIGRATIONMANAGER_H

@@ -1,24 +1,24 @@
-#ifndef DBCONNECTIONPROVIDERSQLITESEE_H
-#define DBCONNECTIONPROVIDERSQLITESEE_H
+#pragma once
 
-#include "mconnectionproviderbase.h"
+#include "mconnectionprovidersqlite.h"
 
 namespace MDatabase {
-class ConnectionProviderSQLiteSee : public ConnectionProviderBase
+class ConnectionProviderSQLiteSee : public ConnectionProviderSQLite
 {
 public:
-    static MDatabase::ConnectionProviderSQLiteSee &instance();
+    static MDatabase::ConnectionProviderSQLiteSee &instance();    
 
-    virtual void setupConnectionData(const QString &databasePath,
-                const QString &connectionName = QLatin1String(QSqlDatabase::defaultConnection));
+    bool checkPluginAvailable() const;
+    void setPassword(const QString& password);
 
-    static bool databaseExist(const QString &databasePath);
-    static bool createDatabase(const QString &databasePath);
+    virtual QSqlDatabase databaseConnection(const QString &connectionName =
+                        QLatin1String(QSqlDatabase::defaultConnection)) const override;
 
 protected:
     ConnectionProviderSQLiteSee();
-    ConnectionProviderSQLiteSee(const QString& type);
+
+private:
+    static const QString m_pluginName;
+    QString m_password;
 };
 }
-
-#endif // DBCONNECTIONPROVIDERSQLITESEE_H

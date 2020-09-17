@@ -1,5 +1,4 @@
-#ifndef DBMIGRATION_H
-#define DBMIGRATION_H
+#pragma once
 
 #include <QVersionNumber>
 #include <functional>
@@ -53,4 +52,3 @@ private:
 };
 
 }
-#endif // DBMIGRATION_H

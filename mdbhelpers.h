@@ -1,5 +1,4 @@
-#ifndef DBHELPERS_H
-#define DBHELPERS_H
+#pragma once
 
 #include <QString>
 
@@ -20,5 +19,3 @@ public:
 };
 
 }
-
-#endif // DBHELPERS_H

@@ -4,9 +4,12 @@
 #include <QFileInfo>
 #include <QFile>
 #include <QDir>
+#include <QSqlQuery>
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(mdatabase)
+
+const QString MDatabase::ConnectionProviderSQLiteSee::m_pluginName = "QSQLITESEE";
 
 MDatabase::ConnectionProviderSQLiteSee &MDatabase::ConnectionProviderSQLiteSee::instance()
 {
@@ -14,35 +17,24 @@ MDatabase::ConnectionProviderSQLiteSee &MDatabase::ConnectionProviderSQLiteSee::
     return cp;
 }
 
-void MDatabase::ConnectionProviderSQLiteSee::setupConnectionData(
-                    const QString &databasePath, const QString &connectionName)
+bool MDatabase::ConnectionProviderSQLiteSee::checkPluginAvailable() const
 {
-    if (!databaseExist(databasePath)) {
-        createDatabase(databasePath);
-    }
-
-    auto db = createDatabaseConnection(connectionName);
-    db.setDatabaseName(databasePath);
+    return !QSqlDatabase::drivers().filter(m_pluginName).empty();
 }
 
-bool MDatabase::ConnectionProviderSQLiteSee::databaseExist(const QString &databasePath)
+void MDatabase::ConnectionProviderSQLiteSee::setPassword(const QString &password)
 {
-    return QFile::exists(databasePath);
+    m_password = password;
 }
 
-bool MDatabase::ConnectionProviderSQLiteSee::createDatabase(const QString &databasePath)
+QSqlDatabase MDatabase::ConnectionProviderSQLiteSee::databaseConnection(
+        const QString &connectionName) const
 {
-    if (!QFileInfo(databasePath).absoluteDir().mkpath(".")) {
-        qCCritical(mdatabase) << "Cannot create a directory for database: " << databasePath;
-        return false;
-    }
-    return true;
+    auto db = ConnectionProviderBase::databaseConnection(connectionName);
+    QSqlQuery key(QString("PRAGMA key='%1'").arg(m_password), db);
+    return db;
 }
 
 MDatabase::ConnectionProviderSQLiteSee::ConnectionProviderSQLiteSee()
-    : ConnectionProviderBase("QSQLITESEE")
-{}
-
-MDatabase::ConnectionProviderSQLiteSee::ConnectionProviderSQLiteSee(const QString &type)
-    : ConnectionProviderBase(type)
+    : ConnectionProviderSQLite(m_pluginName)
 {}

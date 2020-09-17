@@ -1,5 +1,4 @@
-#ifndef DBMIGRATIONSDATA_H
-#define DBMIGRATIONSDATA_H
+#pragma once
 
 #include <QVersionNumber>
 #include <QVector>
@@ -47,5 +46,3 @@ namespace MDatabase {
 #define END_MIGRATIONS    };                                    \
     extern void dbmigrationsinit()                              \
     { Migrations::init(LATEST_DB_VERSION, DB_MIGRATIONS); }
-
-#endif // DBMIGRATIONSDATA_H

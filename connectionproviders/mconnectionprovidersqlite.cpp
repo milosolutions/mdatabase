@@ -8,6 +8,8 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mdatabase)
 
+const QString MDatabase::ConnectionProviderSQLite::m_pluginName = "QSQLITE";
+
 MDatabase::ConnectionProviderSQLite &MDatabase::ConnectionProviderSQLite::instance()
 {
     static ConnectionProviderSQLite cp;
@@ -17,7 +19,7 @@ MDatabase::ConnectionProviderSQLite &MDatabase::ConnectionProviderSQLite::instan
 void MDatabase::ConnectionProviderSQLite::setupConnectionData(
                     const QString &databasePath, const QString &connectionName)
 {
-    if (!databaseExist(databasePath)) {
+    if (!databaseExists(databasePath)) {
         createDatabase(databasePath);
     }
 
@@ -25,7 +27,7 @@ void MDatabase::ConnectionProviderSQLite::setupConnectionData(
     db.setDatabaseName(databasePath);
 }
 
-bool MDatabase::ConnectionProviderSQLite::databaseExist(const QString &databasePath)
+bool MDatabase::ConnectionProviderSQLite::databaseExists(const QString &databasePath)
 {
     return QFile::exists(databasePath);
 }
@@ -40,7 +42,7 @@ bool MDatabase::ConnectionProviderSQLite::createDatabase(const QString &database
 }
 
 MDatabase::ConnectionProviderSQLite::ConnectionProviderSQLite()
-    : ConnectionProviderBase("QSQLITE")
+    : ConnectionProviderBase(m_pluginName)
 {}
 
 MDatabase::ConnectionProviderSQLite::ConnectionProviderSQLite(const QString &type)

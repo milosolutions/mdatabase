@@ -1,5 +1,4 @@
-#ifndef DATABASEMANAGER_H
-#define DATABASEMANAGER_H
+#pragma once
 
 #include <QFutureWatcher>
 
@@ -28,4 +27,3 @@ protected:
 };
 
 }
-#endif // DATABASEMANAGER_H

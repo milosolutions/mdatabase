@@ -23,7 +23,7 @@ bool MDatabase::ConnectionProviderBase::hasDatabaseConnection(
 QSqlDatabase MDatabase::ConnectionProviderBase::databaseConnection(
                                         const QString &connectionName) const
 {
-    auto db = QSqlDatabase{};
+    QSqlDatabase db;
     if (hasDatabaseConnection(connectionName)) {
         db = QSqlDatabase::database(extendedConnectionName(connectionName));
     } else {

@@ -1,5 +1,4 @@
-#ifndef DBCONNECTIONPROVIDERBASE_H
-#define DBCONNECTIONPROVIDERBASE_H
+#pragma once
 
 #include <QSqlDatabase>
 #include <QString>
@@ -26,5 +25,3 @@ protected:
     QString extendedConnectionName(const QString &connectionName) const;
 };
 }
-
-#endif // DBCONNECTIONPROVIDERBASE_H
