@@ -11,6 +11,7 @@ public:
     ConnectionProviderBase(const QString &databaseType);
     virtual ~ConnectionProviderBase() = default;
 
+    bool checkPluginAvailable() const;
     virtual bool hasDatabaseConnection(const QString &connectionName =
                         QLatin1String(QSqlDatabase::defaultConnection)) const;
     virtual QSqlDatabase databaseConnection(const QString &connectionName =

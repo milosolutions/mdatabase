@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     if (cipher.checkPluginAvailable()) {
         cipher.setPassword("secret");
         cipher.setupConnectionData(QStandardPaths::writableLocation
-                                   (QStandardPaths::AppDataLocation)+ "/localCipher.db");
+                                   (QStandardPaths::AppDataLocation) + "/localCipher.db");
         using SqliteCipherMigrations = MDatabase::MigrationManager<MDatabase::ConnectionProviderSQLiteCipher>;
         SqliteCipherMigrations cipherManager;
         QObject::connect(&cipherManager, &SqliteCipherMigrations::databaseUpdateStarted,
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
     if (see.checkPluginAvailable()) {
         see.setPassword("secret1234");
         see.setupConnectionData(QStandardPaths::writableLocation
-                                (QStandardPaths::AppDataLocation)+ "/localSee.db");
+                                (QStandardPaths::AppDataLocation) + "/localSee.db");
         using SqliteSeeMigrations = MDatabase::MigrationManager<MDatabase::ConnectionProviderSQLiteSee>;
         SqliteSeeMigrations seeManager;
         QObject::connect(&seeManager, &SqliteSeeMigrations::databaseUpdateStarted,
@@ -116,7 +116,6 @@ int main(int argc, char *argv[])
         qCCritical(mdatabase) << "SQLiteSee Plugin was not found!!!"
                               << "Check mdatabase/sqlitesee "
                                  "script for details";
-
     }
 
     return app.exec();

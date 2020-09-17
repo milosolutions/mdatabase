@@ -13,6 +13,11 @@ MDatabase::ConnectionProviderBase::ConnectionProviderBase(const QString &databas
     : m_databaseType(databaseType)
 {}
 
+bool MDatabase::ConnectionProviderBase::checkPluginAvailable() const
+{
+    return !QSqlDatabase::drivers().filter(m_databaseType).empty();
+}
+
 
 bool MDatabase::ConnectionProviderBase::hasDatabaseConnection(
                                         const QString &connectionName) const
@@ -37,6 +42,10 @@ QSqlDatabase MDatabase::ConnectionProviderBase::databaseConnection(
     if (!db.isOpen() && !db.open()) {
         qCCritical(mdatabase) << "Cannot open database connection. Cannot proceed.";
     }
+
+    qDebug() << "Opened database" << db.databaseName()
+             << db.connectionName() << db.driverName();
+
     return db;
 }
 

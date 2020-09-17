@@ -8,18 +8,10 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mdatabase)
 
-const QString MDatabase::ConnectionProviderSQLiteCipher::m_pluginName = "SQLITECIPHER";
-
 MDatabase::ConnectionProviderSQLiteCipher &MDatabase::ConnectionProviderSQLiteCipher::instance()
 {
     static ConnectionProviderSQLiteCipher cp;
     return cp;
-}
-
-MDatabase::ConnectionProviderSQLiteCipher::ConnectionProviderSQLiteCipher() :
-    ConnectionProviderSQLite(m_pluginName)
-{
-
 }
 
 void MDatabase::ConnectionProviderSQLiteCipher::setPassword(const QString &password)
@@ -27,7 +19,8 @@ void MDatabase::ConnectionProviderSQLiteCipher::setPassword(const QString &passw
     m_password = password;
 }
 
-QSqlDatabase MDatabase::ConnectionProviderSQLiteCipher::databaseConnection(const QString &connectionName) const
+QSqlDatabase MDatabase::ConnectionProviderSQLiteCipher::databaseConnection(
+        const QString &connectionName) const
 {
     auto db = ConnectionProviderBase::databaseConnection(connectionName);
     db.setPassword(m_password);
@@ -46,7 +39,7 @@ void MDatabase::ConnectionProviderSQLiteCipher::setupConnectionData(
     db.setPassword(m_password);
 }
 
-bool MDatabase::ConnectionProviderSQLiteCipher::checkPluginAvailable() const
+MDatabase::ConnectionProviderSQLiteCipher::ConnectionProviderSQLiteCipher() :
+    ConnectionProviderSQLite("SQLITECIPHER")
 {
-    return !QSqlDatabase::drivers().filter(m_pluginName).empty();
 }

@@ -8,8 +8,6 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mdatabase)
 
-const QString MDatabase::ConnectionProviderSQLite::m_pluginName = "QSQLITE";
-
 MDatabase::ConnectionProviderSQLite &MDatabase::ConnectionProviderSQLite::instance()
 {
     static ConnectionProviderSQLite cp;
@@ -42,7 +40,7 @@ bool MDatabase::ConnectionProviderSQLite::createDatabase(const QString &database
 }
 
 MDatabase::ConnectionProviderSQLite::ConnectionProviderSQLite()
-    : ConnectionProviderBase(m_pluginName)
+    : ConnectionProviderBase("QSQLITE")
 {}
 
 MDatabase::ConnectionProviderSQLite::ConnectionProviderSQLite(const QString &type)

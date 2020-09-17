@@ -10,7 +10,7 @@ public:
 
     virtual void setupConnectionData(
             const QString &databasePath,
-            const QString &connectionName = QLatin1String(QSqlDatabase::defaultConnection));
+            const QString &connectionName = QSqlDatabase::defaultConnection);
 
     static bool databaseExists(const QString &databasePath);
     static bool createDatabase(const QString &databasePath);
@@ -18,8 +18,5 @@ public:
 protected:
     ConnectionProviderSQLite();
     ConnectionProviderSQLite(const QString& type);
-
-private:
-    static const QString m_pluginName;
 };
 }

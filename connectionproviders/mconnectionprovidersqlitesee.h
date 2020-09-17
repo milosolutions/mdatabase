@@ -8,17 +8,20 @@ class ConnectionProviderSQLiteSee : public ConnectionProviderSQLite
 public:
     static MDatabase::ConnectionProviderSQLiteSee &instance();    
 
-    bool checkPluginAvailable() const;
     void setPassword(const QString& password);
 
     virtual QSqlDatabase databaseConnection(const QString &connectionName =
-                        QLatin1String(QSqlDatabase::defaultConnection)) const override;
+                        QSqlDatabase::defaultConnection) const override;
+
+    virtual void setupConnectionData(
+            const QString &databasePath,
+            const QString &connectionName = QLatin1String(
+                QSqlDatabase::defaultConnection)) override;
 
 protected:
     ConnectionProviderSQLiteSee();
 
 private:
-    static const QString m_pluginName;
     QString m_password;
 };
 }

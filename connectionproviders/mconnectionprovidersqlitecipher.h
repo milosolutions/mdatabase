@@ -8,20 +8,20 @@ class ConnectionProviderSQLiteCipher : public ConnectionProviderSQLite
 public:
     static MDatabase::ConnectionProviderSQLiteCipher &instance();
 
-    ConnectionProviderSQLiteCipher();
-    bool checkPluginAvailable() const;
     void setPassword(const QString& password);
 
     virtual QSqlDatabase databaseConnection(const QString &connectionName =
-                        QLatin1String(QSqlDatabase::defaultConnection)) const override;
+                        QSqlDatabase::defaultConnection) const override;
 
     virtual void setupConnectionData(
             const QString &databasePath,
             const QString &connectionName = QLatin1String(
                 QSqlDatabase::defaultConnection)) override;
 
+protected:
+    ConnectionProviderSQLiteCipher();
+
 private:
-    static const QString m_pluginName;
     QString m_password;
 };
 }
