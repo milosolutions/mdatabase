@@ -23,17 +23,17 @@ SOFTWARE.
 
 #include <QtTest>
 #include <QCoreApplication>
-#include "migrationmanager.h"
+#include "mmigrationmanager.h"
 
-#include "connectionproviders/connectionprovidersqlite.h"
-#include "migration.h"
-#include "migrationsdata.h"
+#include "connectionproviders/mconnectionprovidersqlite.h"
+#include "mmigration.h"
+#include "mmigrationsdata.h"
 
 #include <cstdio>
 
-namespace mdatabase {
+namespace MDatabase {
     const QVersionNumber LATEST_DB_VERSION = { 0, 0, 3 };
-    const QVector<mdatabase::Migration> DB_MIGRATIONS;
+    const QVector<MDatabase::Migration> DB_MIGRATIONS;
 }
 
 
@@ -58,10 +58,10 @@ void TestMMigrations::initTestCase()
 
     mDbPath = QStandardPaths::writableLocation(
                     QStandardPaths::AppDataLocation) + "/test.db";
-    mdatabase::ConnectionProviderSQLite::instance().setupConnectionData(mDbPath);
+    MDatabase::ConnectionProviderSQLite::instance().setupConnectionData(mDbPath);
 
     // SQlite migrations manager
-    using SqliteMigrations = mdatabase::MigrationManager<mdatabase::ConnectionProviderSQLite>;
+    using SqliteMigrations = MDatabase::MigrationManager<MDatabase::ConnectionProviderSQLite>;
     SqliteMigrations dbManager;
 }
 
@@ -72,7 +72,7 @@ void TestMMigrations::cleanupTestCase()
 
 void TestMMigrations::testMigrationBuilder()
 {
-    mdatabase::Migration m = mdatabase::MigrationBuilder::builder()
+    MDatabase::Migration m = MDatabase::MigrationBuilder::builder()
         .setVersion("0.0.3")
         .addForwardQuery("CREATE TABLE `User`  (`id` INTEGER primary key UNIQUE)")
         .addBackwardQuery("DROP TABLE `User`")

@@ -1,13 +1,13 @@
 #ifndef DBCONNECTIONPROVIDERSQLITESEE_H
 #define DBCONNECTIONPROVIDERSQLITESEE_H
 
-#include "connectionproviderbase.h"
+#include "mconnectionproviderbase.h"
 
-namespace mdatabase {
+namespace MDatabase {
 class ConnectionProviderSQLiteSee : public ConnectionProviderBase
 {
 public:
-    static mdatabase::ConnectionProviderSQLiteSee &instance();
+    static MDatabase::ConnectionProviderSQLiteSee &instance();
 
     virtual void setupConnectionData(const QString &databasePath,
                 const QString &connectionName = QLatin1String(QSqlDatabase::defaultConnection));

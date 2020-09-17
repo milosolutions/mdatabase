@@ -1,4 +1,4 @@
-#include "connectionprovidersqlitecipher.h"
+#include "mconnectionprovidersqlitecipher.h"
 
 #include <QDebug>
 #include <QFileInfo>
@@ -8,31 +8,31 @@
 
 Q_DECLARE_LOGGING_CATEGORY(migrations)
 
-mdatabase::ConnectionProviderSQLiteCipher &mdatabase::ConnectionProviderSQLiteCipher::instance()
+MDatabase::ConnectionProviderSQLiteCipher &MDatabase::ConnectionProviderSQLiteCipher::instance()
 {
     static ConnectionProviderSQLiteCipher cp;
     return cp;
 }
 
-mdatabase::ConnectionProviderSQLiteCipher::ConnectionProviderSQLiteCipher() :
+MDatabase::ConnectionProviderSQLiteCipher::ConnectionProviderSQLiteCipher() :
     ConnectionProviderSQLite("SQLITECIPHER")
 {
 
 }
 
-void mdatabase::ConnectionProviderSQLiteCipher::setPassword(const QString &password)
+void MDatabase::ConnectionProviderSQLiteCipher::setPassword(const QString &password)
 {
     mPassword = password;
 }
 
-QSqlDatabase mdatabase::ConnectionProviderSQLiteCipher::databaseConnection(const QString &connectionName) const
+QSqlDatabase MDatabase::ConnectionProviderSQLiteCipher::databaseConnection(const QString &connectionName) const
 {
     auto db = ConnectionProviderBase::databaseConnection(connectionName);
     db.setPassword(mPassword);
     return db;
 }
 
-void mdatabase::ConnectionProviderSQLiteCipher::setupConnectionData(
+void MDatabase::ConnectionProviderSQLiteCipher::setupConnectionData(
                     const QString &databasePath, const QString &connectionName)
 {
     if (!databaseExist(databasePath)) {
@@ -44,7 +44,7 @@ void mdatabase::ConnectionProviderSQLiteCipher::setupConnectionData(
     db.setPassword(mPassword);
 }
 
-bool mdatabase::ConnectionProviderSQLiteCipher::checkPluginAvailable() const
+bool MDatabase::ConnectionProviderSQLiteCipher::checkPluginAvailable() const
 {
     return !QSqlDatabase::drivers().filter("SQLITECIPHER").empty();
 }

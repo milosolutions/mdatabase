@@ -1,4 +1,4 @@
-#include "abstractmigrationmanager.h"
+#include "mabstractmigrationmanager.h"
 
 #include <QFuture>
 #include <QLoggingCategory>
@@ -6,7 +6,7 @@
 
 Q_DECLARE_LOGGING_CATEGORY(migrations)
 
-namespace mdatabase {
+namespace MDatabase {
 
 AbstractMigrationManager::AbstractMigrationManager(QObject *parent)
     : QObject(parent)

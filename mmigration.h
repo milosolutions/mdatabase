@@ -5,19 +5,19 @@
 #include <functional>
 #include <QVector>
 
-#include "dbhelpers.h"
+#include "mdbhelpers.h"
 
 class QSqlDatabase;
 
-namespace mdatabase {
+namespace MDatabase {
 class Migration final {
 public:
     Migration(const QVersionNumber &mNumber,
               const std::function<bool(QSqlDatabase &)> &mForward,
               const std::function<bool(QSqlDatabase &)> &mBackward);
 
-    static bool RunForward(const Migration &m, QSqlDatabase &mdatabase);
-    static bool RunBackward(const Migration &m, QSqlDatabase &mdatabase);
+    static bool RunForward(const Migration &m, QSqlDatabase &database);
+    static bool RunBackward(const Migration &m, QSqlDatabase &database);
 
     QVersionNumber number() const;
 
@@ -26,7 +26,7 @@ private:
     std::function<bool(QSqlDatabase &)> mForward;
     std::function<bool(QSqlDatabase &)> mBackward;
 
-    void runCommon(QSqlDatabase &mdatabase) const;
+    void runCommon(QSqlDatabase &database) const;
 };
 
 

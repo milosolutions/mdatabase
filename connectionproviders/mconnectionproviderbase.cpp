@@ -1,4 +1,4 @@
-#include "connectionproviderbase.h"
+#include "mconnectionproviderbase.h"
 
 #include <QCoreApplication>
 #include <QDebug>
@@ -9,18 +9,18 @@
 
 Q_DECLARE_LOGGING_CATEGORY(migrations)
 
-mdatabase::ConnectionProviderBase::ConnectionProviderBase(const QString &databaseType)
+MDatabase::ConnectionProviderBase::ConnectionProviderBase(const QString &databaseType)
     : mDatabaseType(databaseType)
 {}
 
 
-bool mdatabase::ConnectionProviderBase::hasDatabaseConnection(
+bool MDatabase::ConnectionProviderBase::hasDatabaseConnection(
                                         const QString &connectionName) const
 {
     return QSqlDatabase::contains(extendedConnectionName(connectionName));
 }
 
-QSqlDatabase mdatabase::ConnectionProviderBase::databaseConnection(
+QSqlDatabase MDatabase::ConnectionProviderBase::databaseConnection(
                                         const QString &connectionName) const
 {
     auto db = QSqlDatabase{};
@@ -40,20 +40,20 @@ QSqlDatabase mdatabase::ConnectionProviderBase::databaseConnection(
     return db;
 }
 
-QSqlDatabase mdatabase::ConnectionProviderBase::createDatabaseConnection(
+QSqlDatabase MDatabase::ConnectionProviderBase::createDatabaseConnection(
                                         const QString &connectionName) const
 {
     return QSqlDatabase::addDatabase(mDatabaseType, 
                         baseConnectionName(connectionName));
 }
 
-QString mdatabase::ConnectionProviderBase::baseConnectionName(
+QString MDatabase::ConnectionProviderBase::baseConnectionName(
                             const QString &connectionName) const
 {
     return QString("%1_%2").arg(mDatabaseType, connectionName);
 }
 
-QString mdatabase::ConnectionProviderBase::extendedConnectionName(
+QString MDatabase::ConnectionProviderBase::extendedConnectionName(
                                         const QString &connectionName) const
 {
     auto baseConnectionName = this->baseConnectionName(connectionName);

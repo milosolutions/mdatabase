@@ -6,9 +6,9 @@
 #include <functional>
 #include <type_traits>
 
-#include "connectionproviders/connectionproviderbase.h"
+#include "connectionproviders/mconnectionproviderbase.h"
 
-#include "abstractmigrationmanager.h"
+#include "mabstractmigrationmanager.h"
 
 template <typename T, typename = void>
 struct has_instance_method : std::false_type {};
@@ -17,7 +17,7 @@ template <typename T>
 struct has_instance_method<T, 
            std::void_t<decltype(T::instance()) >> : std::true_type {};
 
-namespace mdatabase {
+namespace MDatabase {
 class Migration;
 
 template<class ConnectionProvider, typename Valid = std::enable_if_t<
@@ -63,14 +63,14 @@ protected:
 #include <QSqlQuery>
 #include <QSqlError>
 
-#include "dbhelpers.h"
-#include "migration.h"
-#include "migrationsdata.h"
+#include "mdbhelpers.h"
+#include "mmigration.h"
+#include "mmigrationsdata.h"
 #include <QLoggingCategory>
 #include <QtConcurrent/QtConcurrent>
 
 Q_DECLARE_LOGGING_CATEGORY(migrations)
-namespace mdatabase {
+namespace MDatabase {
 // Migration manager implementation
 template<class ConnectionProvider, typename Valid>
 MigrationManager<ConnectionProvider, Valid>::MigrationManager(const QString &connectionName)
@@ -86,7 +86,7 @@ void MigrationManager<ConnectionProvider, Valid>::loadVersion()
 template<class ConnectionProvider, typename Valid>
 bool MigrationManager<ConnectionProvider, Valid>::needsUpdate()
 {
-    return (mDbVersion != MIGRATIONS::latestDbVersion());
+    return (mDbVersion != Migrations::latestDbVersion());
 }
 
 template<class ConnectionProvider, typename Valid>
@@ -128,7 +128,7 @@ QVersionNumber MigrationManager<ConnectionProvider, Valid>::getVersionNumber() c
 
     auto query = QSqlQuery(provider().databaseConnection(cDbConnectionName));
     query.prepare(VersionQuery);
-    mdatabase::Helpers::execQuery(query);
+    MDatabase::Helpers::execQuery(query);
     if (!query.first()) {
         qCCritical(migrations) << "No version in migration table.";
         return {};
@@ -143,14 +143,14 @@ bool MigrationManager<ConnectionProvider, Valid>::updateDb()
     auto db = provider().databaseConnection(cDbConnectionName);
     auto dbName = db.connectionName();
 
-    if (mDbVersion > MIGRATIONS::latestDbVersion()) {
+    if (mDbVersion > Migrations::latestDbVersion()) {
         // backward
-        return applyMigrations(MIGRATIONS::migrations().rbegin(), MIGRATIONS::migrations().rend(),
+        return applyMigrations(Migrations::migrations().rbegin(), Migrations::migrations().rend(),
             std::bind(Migration::RunBackward, std::placeholders::_1, db), false);
     }
 
     // forward
-    return applyMigrations(MIGRATIONS::migrations().begin(), MIGRATIONS::migrations().end(),
+    return applyMigrations(Migrations::migrations().begin(), Migrations::migrations().end(),
             std::bind(Migration::RunForward, std::placeholders::_1, db), true);
 }
 
@@ -170,7 +170,7 @@ bool MigrationManager<ConnectionProvider, Valid>::applyMigrations(
         start += (forward ? 1 : 0);
     }
 
-    auto finish = findMigrationNumber(begin, end, MIGRATIONS::latestDbVersion());
+    auto finish = findMigrationNumber(begin, end, Migrations::latestDbVersion());
     if (finish == end) {
         qCCritical(migrations) << "Cannot update database - latest version missing.";
         return false;

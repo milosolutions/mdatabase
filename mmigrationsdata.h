@@ -4,9 +4,9 @@
 #include <QVersionNumber>
 #include <QVector>
 #include <array>
-namespace mdatabase {
+namespace MDatabase {
     class Migration;
-    class MIGRATIONS {
+    class Migrations {
     public:
         static const QVersionNumber& latestDbVersion()
         {
@@ -42,10 +42,10 @@ namespace mdatabase {
 #define CURRENT_MIGRATION_VERSION(vmajor, vminor, vpatch) \
     const QVersionNumber LATEST_DB_VERSION = { vmajor, vminor, vpatch };
 
-#define START_MIGRATIONS const QVector<mdatabase::Migration> DB_MIGRATIONS = {
+#define START_MIGRATIONS const QVector<MDatabase::Migration> DB_MIGRATIONS = {
 
 #define END_MIGRATIONS    };                                    \
     extern void dbmigrationsinit()                              \
-    { MIGRATIONS::init(LATEST_DB_VERSION, DB_MIGRATIONS); }     
+    { Migrations::init(LATEST_DB_VERSION, DB_MIGRATIONS); }
 
 #endif // DBMIGRATIONSDATA_H

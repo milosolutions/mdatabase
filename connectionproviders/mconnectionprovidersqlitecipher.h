@@ -1,13 +1,13 @@
 #ifndef DBCONNECTIONPROVIDERSQLITECIPHER_H
 #define DBCONNECTIONPROVIDERSQLITECIPHER_H
 
-#include "connectionprovidersqlite.h"
+#include "mconnectionprovidersqlite.h"
 
-namespace mdatabase {
+namespace MDatabase {
 class ConnectionProviderSQLiteCipher : public ConnectionProviderSQLite
 {
 public:
-    static mdatabase::ConnectionProviderSQLiteCipher &instance();
+    static MDatabase::ConnectionProviderSQLiteCipher &instance();
 
     ConnectionProviderSQLiteCipher();
     bool checkPluginAvailable() const;

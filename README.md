@@ -1,9 +1,9 @@
 MDatabase
 ===
 
-[Online documentation](https://docs.milosolutions.com/milo-code-db/mmigrations)
+[Online documentation](https://docs.milosolutions.com/milo-code-db/mdatabase)
 
-[Source code](https://github.com/milosolutions/mmigrations)
+[Source code](https://github.com/milosolutions/mdatabase)
 
 # Getting started
 
@@ -21,11 +21,11 @@ To set up migrations you have to create two  variables containing:
 There are helpers macros which makes whole process very simple. Here is an example
 of basic setup:
 ```c++
-#include "migrationsdata.h"
+#include "mmigrationsdata.h"
 
 // ...
 
-using namespace mdatabase;
+using namespace MDatabase;
 
 CURRENT_MIGRATION_VERSION(0, 0, 4);
 START_MIGRATIONS

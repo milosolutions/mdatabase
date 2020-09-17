@@ -1,4 +1,4 @@
-#include "connectionprovidersqlitesee.h"
+#include "mconnectionprovidersqlitesee.h"
 
 #include <QDebug>
 #include <QFileInfo>
@@ -8,13 +8,13 @@
 
 Q_DECLARE_LOGGING_CATEGORY(migrations)
 
-mdatabase::ConnectionProviderSQLiteSee &mdatabase::ConnectionProviderSQLiteSee::instance()
+MDatabase::ConnectionProviderSQLiteSee &MDatabase::ConnectionProviderSQLiteSee::instance()
 {
     static ConnectionProviderSQLiteSee cp;
     return cp;
 }
 
-void mdatabase::ConnectionProviderSQLiteSee::setupConnectionData(
+void MDatabase::ConnectionProviderSQLiteSee::setupConnectionData(
                     const QString &databasePath, const QString &connectionName)
 {
     if (!databaseExist(databasePath)) {
@@ -25,12 +25,12 @@ void mdatabase::ConnectionProviderSQLiteSee::setupConnectionData(
     db.setDatabaseName(databasePath);
 }
 
-bool mdatabase::ConnectionProviderSQLiteSee::databaseExist(const QString &databasePath)
+bool MDatabase::ConnectionProviderSQLiteSee::databaseExist(const QString &databasePath)
 {
     return QFile::exists(databasePath);
 }
 
-bool mdatabase::ConnectionProviderSQLiteSee::createDatabase(const QString &databasePath)
+bool MDatabase::ConnectionProviderSQLiteSee::createDatabase(const QString &databasePath)
 {
     if (!QFileInfo(databasePath).absoluteDir().mkpath(".")) {
         qCCritical(migrations) << "Cannot create a directory for database: " << databasePath;
@@ -39,10 +39,10 @@ bool mdatabase::ConnectionProviderSQLiteSee::createDatabase(const QString &datab
     return true;
 }
 
-mdatabase::ConnectionProviderSQLiteSee::ConnectionProviderSQLiteSee()
+MDatabase::ConnectionProviderSQLiteSee::ConnectionProviderSQLiteSee()
     : ConnectionProviderBase("QSQLITESEE")
 {}
 
-mdatabase::ConnectionProviderSQLiteSee::ConnectionProviderSQLiteSee(const QString &type)
+MDatabase::ConnectionProviderSQLiteSee::ConnectionProviderSQLiteSee(const QString &type)
     : ConnectionProviderBase(type)
 {}

@@ -1,13 +1,13 @@
-#include "migrationsdata.h"
+#include "mmigrationsdata.h"
 
 #include <QString>
 #include <QList>
 
-#include "dbhelpers.h"
-#include "migration.h"
+#include "mdbhelpers.h"
+#include "mmigration.h"
 #include <iostream>
 
-using namespace mdatabase;
+using namespace MDatabase;
 
 //!!! Always remember to update current version for any db changes!
 
@@ -23,7 +23,7 @@ START_MIGRATIONS
     // functions takes db as a argument
     {
         { 0, 0, 2 },
-        std::bind(&Helpers::runQueries, std::placeholders::_1, mdatabase::Helpers::Queries {
+        std::bind(&Helpers::runQueries, std::placeholders::_1, MDatabase::Helpers::Queries {
             QLatin1String("CREATE TABLE `User`  (`id`   INTEGER primary key UNIQUE,"
                                                 "`name`		TEXT NOT NULL,"
                                                 "`type`	INTEGER NOT NULL"
@@ -33,7 +33,7 @@ START_MIGRATIONS
             QLatin1String("INSERT INTO `User`   (`name`, `type`)"
                                                 "VALUES ('Login', 0)"),
         }),
-        std::bind(&Helpers::runQueries, std::placeholders::_1, mdatabase::Helpers::Queries {
+        std::bind(&Helpers::runQueries, std::placeholders::_1, MDatabase::Helpers::Queries {
             QLatin1String("DROP TABLE `User`")
         })
     },

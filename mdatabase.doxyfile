@@ -8,13 +8,13 @@ DOXYFILE_ENCODING = UTF-8
 PROJECT_NAME = MMigrations
 PROJECT_NUMBER = 1.0
 PROJECT_BRIEF = "MMigraions is a library that helps to manage database migrations."
-#PROJECT_LOGO = mmigrations.png
+#PROJECT_LOGO = mdatabase.png
 
 OUTPUT_DIRECTORY = doc/
 
-INPUT = abstractmigrationmanager.cpp  dbhelpers.h migration.cpp  migrationmanager.h README.md  \
-        abstractmigrationmanager.h    dbhelpers.cpp migration.h    migrationsdata.h  \
-        connectionproviderbase.cpp  connectionproviderbase.h  connectionprovidersqlitecipher.cpp  \
+INPUT = abstractmigrationmanager.cpp  mdbhelpers.h migration.cpp  migrationmanager.h README.md  \
+        mabstractmigrationmanager.h    dbhelpers.cpp mmigration.h    mmigrationsdata.h  \
+        connectionproviderbase.cpp  mconnectionproviderbase.h  connectionprovidersqlitecipher.cpp  \
         connectionprovidersqlitecipher.h  connectionprovidersqlite.cpp  connectionprovidersqlite.h
         
 #EXCLUDE_PATTERNS = */something/*
@@ -31,7 +31,7 @@ EXTRACT_STATIC = YES
 
 DISTRIBUTE_GROUP_DOC = YES
 
-GENERATE_TAGFILE = mmigrations.doxytag
+GENERATE_TAGFILE = mdatabase.doxytag
 GENERATE_HTML = YES
 GENERATE_LATEX = NO
 GENERATE_RTF = NO

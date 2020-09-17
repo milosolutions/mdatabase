@@ -7,16 +7,16 @@
 #include <QSqlQuery>
 #include <QStandardPaths>
 
-#include "migrationmanager.h"
-#include "dbhelpers.h"
+#include "mmigrationmanager.h"
+#include "mdbhelpers.h"
 #include <QLoggingCategory>
 
-#include <connectionproviders/connectionprovidersqlite.h>
-#include <connectionproviders/connectionprovidersqlitecipher.h>
+#include <connectionproviders/mconnectionprovidersqlite.h>
+#include <connectionproviders/mconnectionprovidersqlitecipher.h>
 
 Q_DECLARE_LOGGING_CATEGORY(migrations)
 
-namespace mdb = mdatabase;
+namespace mdb = MDatabase;
 
 void printUsers(const QSqlDatabase& connection)
 {
