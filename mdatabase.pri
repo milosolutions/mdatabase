@@ -3,21 +3,21 @@ QT *= sql
 INCLUDEPATH += $$PWD
 
 SOURCES += \
-        $$PWD/connectionproviders/connectionproviderbase.cpp \
-        $$PWD/connectionproviders/connectionprovidersqlite.cpp \
-        $$PWD/connectionproviders/connectionprovidersqlitecipher.cpp \
-        $$PWD/connectionproviders/connectionprovidersqlitesee.cpp \
-        $$PWD/dbhelpers.cpp \
-        $$PWD/migration.cpp \
-        $$PWD/abstractmigrationmanager.cpp
+        $$PWD/connectionproviders/mconnectionproviderbase.cpp \
+        $$PWD/connectionproviders/mconnectionprovidersqlite.cpp \
+        $$PWD/connectionproviders/mconnectionprovidersqlitecipher.cpp \
+        $$PWD/connectionproviders/mconnectionprovidersqlitesee.cpp \
+        $$PWD/mdbhelpers.cpp \
+        $$PWD/mmigration.cpp \
+        $$PWD/mabstractmigrationmanager.cpp
 
 HEADERS += \
-        $$PWD/connectionproviders/connectionproviderbase.h \
-        $$PWD/connectionproviders/connectionprovidersqlite.h \
-        $$PWD/connectionproviders/connectionprovidersqlitecipher.h \
-        $$PWD/connectionproviders/connectionprovidersqlitesee.h \
-        $$PWD/dbhelpers.h \
-        $$PWD/migration.h \
-        $$PWD/migrationmanager.h \
-        $$PWD/abstractmigrationmanager.h \
-        $$PWD/migrationsdata.h
+        $$PWD/connectionproviders/mconnectionproviderbase.h \
+        $$PWD/connectionproviders/mconnectionprovidersqlite.h \
+        $$PWD/connectionproviders/mconnectionprovidersqlitecipher.h \
+        $$PWD/connectionproviders/mconnectionprovidersqlitesee.h \
+        $$PWD/mdbhelpers.h \
+        $$PWD/mmigration.h \
+        $$PWD/mmigrationmanager.h \
+        $$PWD/mabstractmigrationmanager.h \
+        $$PWD/mmigrationsdata.h
