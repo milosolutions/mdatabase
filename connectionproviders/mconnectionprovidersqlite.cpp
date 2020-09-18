@@ -21,6 +21,8 @@ void MDatabase::ConnectionProviderSQLite::setupConnectionData(
         createDatabase(databasePath);
     }
 
+    qDebug() << "Creating DB BASE" << m_databaseType << connectionName;
+
     auto db = createDatabaseConnection(connectionName);
     db.setDatabaseName(databasePath);
 }

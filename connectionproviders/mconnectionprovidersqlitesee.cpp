@@ -35,6 +35,8 @@ void MDatabase::ConnectionProviderSQLiteSee::setupConnectionData(const QString &
         createDatabase(databasePath);
     }
 
+    qDebug() << "Creating DB SEE" << m_databaseType << connectionName;
+
     auto db = createDatabaseConnection(connectionName);
     db.setDatabaseName(databasePath);
 }

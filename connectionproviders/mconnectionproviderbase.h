@@ -13,9 +13,9 @@ public:
 
     bool checkPluginAvailable() const;
     virtual bool hasDatabaseConnection(const QString &connectionName =
-                        QLatin1String(QSqlDatabase::defaultConnection)) const;
+                        QSqlDatabase::defaultConnection) const;
     virtual QSqlDatabase databaseConnection(const QString &connectionName =
-                        QLatin1String(QSqlDatabase::defaultConnection)) const;
+                        QSqlDatabase::defaultConnection) const;
 
 protected:
     QString m_databaseType;
