@@ -110,9 +110,11 @@ void MigrationManager<ConnectionProvider, Valid>::setupDatabase()
             emit databaseUpdateStarted();
             qDebug() << "DB update started HERE" << m_dbConnectionName << m_dbVersion;
 
-            m_migrationRunner = QtConcurrent::run(
-                std::bind(&MigrationManager::update, this));
-            m_migrationProgress.setFuture(m_migrationRunner);
+            update();
+
+//            m_migrationRunner = QtConcurrent::run(
+//                std::bind(&MigrationManager::update, this));
+//            m_migrationProgress.setFuture(m_migrationRunner);
         } else {
             emit databaseReady();
         }
