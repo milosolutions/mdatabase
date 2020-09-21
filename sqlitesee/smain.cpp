@@ -2,6 +2,7 @@
 #include <QSqlDriverPlugin>
 #include <QDebug>
 #include "qsql_sqlite_p.h"
+#include "sqlite3.h"
 
 class QSQLiteSeeDriverPlugin : public QSqlDriverPlugin
 {
@@ -23,7 +24,8 @@ QSqlDriver* QSQLiteSeeDriverPlugin::create(const QString &name)
 {
     if (name == QLatin1String("QSQLITESEE")) {
         QSQLiteDriver* driver = new QSQLiteDriver();
-        qDebug() << "Activating QSQLITESEE plugin" << driver;
+        qDebug() << "Activating QSQLITESEE plugin" << driver
+        << "Thread safe?" << sqlite3_threadsafe();
         return driver;
     }
     return 0;

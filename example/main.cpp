@@ -40,65 +40,67 @@ int main(int argc, char *argv[])
     app.setApplicationName(AppName);
 
 //    // **** SQLITE 3 ****
-//    qCDebug(mdatabase) << "==================================";
-//    qCDebug(mdatabase) << "SQLite3 example:";
-//    // setting up SQLite db path
-//    MDatabase::ConnectionProviderSQLite::instance().setupConnectionData(
-//                QStandardPaths::writableLocation(
-//                    QStandardPaths::AppDataLocation) + "/local.db");
+    qCDebug(mdatabase) << "==================================";
+    qCDebug(mdatabase) << "SQLite3 example:";
+    // setting up SQLite db path
+    MDatabase::ConnectionProviderSQLite::instance().setupConnectionData(
+                QStandardPaths::writableLocation(
+                    QStandardPaths::AppDataLocation) + "/local.db");
 
-//    // SQlite migrations manager
-//    using SqliteMigrations = MDatabase::MigrationManager<MDatabase::ConnectionProviderSQLite>;
-//    SqliteMigrations dbManager;
-//    QObject::connect(&dbManager, &SqliteMigrations::databaseUpdateStarted,
-//                     &app, []{ qInfo() << "Database update started!"; });
-//    QObject::connect(&dbManager, &SqliteMigrations::databaseUpdateError,
-//                     &app, []{ qInfo() << "Database update error!"; });
-//    QObject::connect(&dbManager, &SqliteMigrations::databaseReady,
-//                     &app, [&]{
-//        qCInfo(mdatabase) << "Database ready!";
-//        printUsers(dbManager.provider().databaseConnection());
-//    });
-//    dbManager.setupDatabase();
+    // SQlite migrations manager
+    using SqliteMigrations = MDatabase::MigrationManager<MDatabase::ConnectionProviderSQLite>;
+    SqliteMigrations dbManager;
+    QObject::connect(&dbManager, &SqliteMigrations::databaseUpdateStarted,
+                     &app, []{ qInfo() << "Database update started!"; });
+    QObject::connect(&dbManager, &SqliteMigrations::databaseUpdateError,
+                     &app, []{ qInfo() << "Database update error!"; });
+    QObject::connect(&dbManager, &SqliteMigrations::databaseReady,
+                     &app, [&]{
+        qCInfo(mdatabase) << "Database ready!";
+        printUsers(dbManager.provider().databaseConnection());
+    });
+    dbManager.setupDatabase();
 
     // **** SQLITE 3 Cipher ****
 
-//    qCDebug(mdatabase) << "==================================";
-//    qCDebug(mdatabase) << "SQlite3Cipher example:";
+    qCDebug(mdatabase) << "==================================";
+    qCDebug(mdatabase) << "SQlite3Cipher example:";
 
-//    auto& cipher = MDatabase::ConnectionProviderSQLiteCipher::instance();
-//    if (cipher.checkPluginAvailable()) {
-//        cipher.setPassword("secret");
-//        cipher.setupConnectionData(QStandardPaths::writableLocation
-//                                   (QStandardPaths::AppDataLocation) + "/localCipher.db");
-//        using SqliteCipherMigrations = MDatabase::MigrationManager<MDatabase::ConnectionProviderSQLiteCipher>;
-//        SqliteCipherMigrations cipherManager;
-//        QObject::connect(&cipherManager, &SqliteCipherMigrations::databaseUpdateStarted,
-//                         &app, []{ qInfo() << "Ciphered database update started!"; });
-//        QObject::connect(&cipherManager, &SqliteCipherMigrations::databaseUpdateError,
-//                         &app, []{ qInfo() << "Ciphered database update error!"; });
-//        QObject::connect(&cipherManager, &SqliteCipherMigrations::databaseReady,
-//                         &app, [&]{
-//            qCInfo(mdatabase) << "Ciphered database ready!";
-//            printUsers(cipherManager.provider().databaseConnection());
-//        });
-//        cipherManager.setupDatabase();
-//    } else {
-//        qCCritical(mdatabase) << "SQLite3 Cipher Plugin was not found!!!"
-//                              << "Check mdatabase/sqlitecipher "
-//                                 "script for details";
-
-//    }
+    if (MDatabase::ConnectionProviderSQLiteSee::instance().checkPluginAvailable()) {
+        MDatabase::ConnectionProviderSQLiteSee::instance().setPassword("secret");
+        MDatabase::ConnectionProviderSQLiteSee::instance().setupConnectionData(QStandardPaths::writableLocation
+                                   (QStandardPaths::AppDataLocation) + "/localCipher.db");
+        using SqliteCipherMigrations = MDatabase::MigrationManager<MDatabase::ConnectionProviderSQLiteCipher>;
+        SqliteCipherMigrations cipherManager;
+        QObject::connect(&cipherManager, &SqliteCipherMigrations::databaseUpdateStarted,
+                         &app, []{ qInfo() << "Ciphered database update started!"; });
+        QObject::connect(&cipherManager, &SqliteCipherMigrations::databaseUpdateError,
+                         &app, []{ qInfo() << "Ciphered database update error!"; });
+        QObject::connect(&cipherManager, &SqliteCipherMigrations::databaseReady,
+                         &app, [&]{
+            qCInfo(mdatabase) << "Ciphered database ready!";
+            printUsers(cipherManager.provider().databaseConnection());
+        });
+        cipherManager.setupDatabase();
+    } else {
+        qCCritical(mdatabase) << "SQLite3 Cipher Plugin was not found!!!"
+                              << "Check mdatabase/sqlitecipher "
+                                 "script for details";
+    }
 
     // **** SQLiteSee ****
 
     qCDebug(mdatabase) << "==================================";
     qCDebug(mdatabase) << "SQliteSee example:";
 
-    auto& see = MDatabase::ConnectionProviderSQLiteSee::instance();
-    if (see.checkPluginAvailable()) {
-        see.setPassword("secret1234");
-        see.setupConnectionData(QStandardPaths::writableLocation
+    MDatabase::ConnectionProviderSQLiteSee::instance().setupConnectionData(
+                QStandardPaths::writableLocation(
+                    QStandardPaths::AppDataLocation) + "/local.db");
+
+//    auto& see = MDatabase::ConnectionProviderSQLiteSee::instance();
+//    if (see.checkPluginAvailable()) {
+        MDatabase::ConnectionProviderSQLiteSee::instance().setPassword("secret1234");
+        MDatabase::ConnectionProviderSQLiteSee::instance().setupConnectionData(QStandardPaths::writableLocation
                                 (QStandardPaths::AppDataLocation) + "/localSee.db");
         using SqliteSeeMigrations = MDatabase::MigrationManager<MDatabase::ConnectionProviderSQLiteSee>;
         SqliteSeeMigrations seeManager;
@@ -112,11 +114,11 @@ int main(int argc, char *argv[])
             printUsers(seeManager.provider().databaseConnection());
         });
         seeManager.setupDatabase();
-    } else {
-        qCCritical(mdatabase) << "SQLiteSee Plugin was not found!!!"
-                              << "Check mdatabase/sqlitesee "
-                                 "script for details";
-    }
+//    } else {
+//        qCCritical(mdatabase) << "SQLiteSee Plugin was not found!!!"
+//                              << "Check mdatabase/sqlitesee "
+//                                 "script for details";
+//    }
 
     return app.exec();
 }
