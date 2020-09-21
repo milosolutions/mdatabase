@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source $PWD/script-includes/utils.sh
+
 if [ "${1}" = "-h" ] || [ "${1}" = "--help" ]; then
   echo "Usage: sqlitesee_install.sh [path-to-qt-sources]"
   echo
@@ -55,9 +57,8 @@ if [ -z $QT_SOURCE ]; then
   
   cd qt-src
   
-  if [ ! -d "qtbase-everywhere-src-${QT_VER}" ]; then  
-    wget https://download.qt.io/archive/qt/${QT_VER_MINOR}/${QT_VER}/submodules/qtbase-everywhere-src-${QT_VER}.tar.xz
-    tar -xaf qtbase-everywhere-src-${QT_VER}.tar.xz
+  if [ ! -d "qtbase-everywhere-src-${QT_VER}" ]; then
+    get_qtbase_sources
   fi
   QT_SOURCE=${PWD}/qtbase-everywhere-src-${QT_VER}
   QSQL_SOURCE="${QT_SOURCE}/src/plugins/sqldrivers"
