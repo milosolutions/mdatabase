@@ -100,18 +100,11 @@ bool MigrationManager<ConnectionProvider, Valid>::update()
 template<class ConnectionProvider, typename Valid>
 void MigrationManager<ConnectionProvider, Valid>::setupDatabase()
 {
-    qDebug() << "Setting up DB" << m_dbConnectionName << m_dbVersion;
     Q_ASSERT_X(!m_setupDone, Q_FUNC_INFO, "Trying to setup database twice");
     if (!m_setupDone) {
-        qDebug() << "YYYYYY";
         loadVersion();
-        qDebug() << "ZZZZZZ";
         if (needsUpdate()) {
             emit databaseUpdateStarted();
-            qDebug() << "DB update started HERE" << m_dbConnectionName << m_dbVersion;
-
-            //update();
-
             m_migrationRunner = QtConcurrent::run(
                 std::bind(&MigrationManager::update, this));
             m_migrationProgress.setFuture(m_migrationRunner);
@@ -129,10 +122,8 @@ QVersionNumber MigrationManager<ConnectionProvider, Valid>::getVersionNumber() c
     static const QLatin1String VersionQuery = 
             QLatin1String("SELECT `version` from `Migrations` ORDER BY `id` DESC LIMIT 1");
 
-    qDebug() << "XXX" << m_dbConnectionName;
     auto query = QSqlQuery(provider().databaseConnection(m_dbConnectionName));
     query.prepare(VersionQuery);
-    qDebug() << "AAAAA" << m_dbConnectionName;
     MDatabase::Helpers::execQuery(query);
     if (!query.first()) {
         qCCritical(mdatabase) << "No version in migration table.";

@@ -24,7 +24,6 @@ QSqlDatabase MDatabase::ConnectionProviderSQLiteSee::databaseConnection(
         const QString &connectionName) const
 {
     auto db = ConnectionProviderBase::databaseConnection(connectionName);
-    qDebug() << "Adding PRAGMA key" << m_password;
     QSqlQuery key(QString("PRAGMA key='%1'").arg(m_password), db);
     return db;
 }
