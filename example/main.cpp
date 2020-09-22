@@ -1,10 +1,6 @@
 #include <QCoreApplication>
 #include <QTimer>
 
-#define AppVersion "0.0.1"
-#define CompanyName "Milo Solutions"
-#define AppName "MDatabase"
-
 #include <QSqlQuery>
 #include <QStandardPaths>
 #include <QLoggingCategory>
@@ -36,9 +32,9 @@ int main(int argc, char *argv[])
     INIT_MIGRATIONS
 
     QCoreApplication app(argc, argv);
-    app.setApplicationVersion(AppVersion);
-    app.setOrganizationName(CompanyName);
-    app.setApplicationName(AppName);
+    app.setApplicationVersion("0.0.1");
+    app.setOrganizationName("Milo Solutions");
+    app.setApplicationName("MDatabase");
 
     // **** SQLITE 3 ****
     qCDebug(mdatabase) << "==================================";
