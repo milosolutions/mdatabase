@@ -35,7 +35,7 @@ public:
 
     void setupDatabase() override;
 
-    const ConnectionProvider& provider() const {
+    const ConnectionProvider *provider() const {
         return ConnectionProvider::instance();
     }
 
@@ -122,7 +122,7 @@ QVersionNumber MigrationManager<ConnectionProvider, Valid>::getVersionNumber() c
     static const QLatin1String VersionQuery = 
             QLatin1String("SELECT `version` from `Migrations` ORDER BY `id` DESC LIMIT 1");
 
-    auto query = QSqlQuery(provider().databaseConnection(m_dbConnectionName));
+    auto query = QSqlQuery(provider()->databaseConnection(m_dbConnectionName));
     query.prepare(VersionQuery);
     MDatabase::Helpers::execQuery(query);
     if (!query.first()) {
@@ -136,7 +136,7 @@ QVersionNumber MigrationManager<ConnectionProvider, Valid>::getVersionNumber() c
 template<class ConnectionProvider, typename Valid>
 bool MigrationManager<ConnectionProvider, Valid>::updateDb()
 {
-    auto db = provider().databaseConnection(m_dbConnectionName);
+    auto db = provider()->databaseConnection(m_dbConnectionName);
     auto dbName = db.connectionName();
 
     if (m_dbVersion > Migrations::latestDbVersion()) {

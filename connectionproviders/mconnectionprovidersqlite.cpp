@@ -8,10 +8,10 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mdatabase)
 
-MDatabase::ConnectionProviderSQLite &MDatabase::ConnectionProviderSQLite::instance()
+MDatabase::ConnectionProviderSQLite *MDatabase::ConnectionProviderSQLite::instance()
 {
     static ConnectionProviderSQLite cp;
-    return cp;
+    return &cp;
 }
 
 void MDatabase::ConnectionProviderSQLite::setupConnectionData(
@@ -21,7 +21,7 @@ void MDatabase::ConnectionProviderSQLite::setupConnectionData(
         createDatabase(databasePath);
     }
 
-    qDebug() << "Creating DB BASE" << m_databaseType << connectionName;
+    qCDebug(mdatabase) << "Creating DB BASE" << m_databaseType << connectionName;
 
     auto db = createDatabaseConnection(connectionName);
     db.setDatabaseName(databasePath);

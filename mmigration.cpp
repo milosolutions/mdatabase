@@ -188,7 +188,7 @@ MDatabase::MigrationBuilder &&MDatabase::MigrationBuilder::addBackwardQuery(cons
  */
 MDatabase::MigrationBuilder &&MDatabase::MigrationBuilder::setForwardQueries(const MDatabase::Helpers::Queries &queries)
 {
-    Q_ASSERT_X(m_forward.empty(), Q_FUNC_INFO, "mForward collection is not empty!");
+    Q_ASSERT_X(m_forward.empty(), Q_FUNC_INFO, "Forward collection is not empty!");
     m_forward = queries;
     return std::move(*this);
 }
@@ -199,7 +199,7 @@ MDatabase::MigrationBuilder &&MDatabase::MigrationBuilder::setForwardQueries(con
  */
 MDatabase::MigrationBuilder &&MDatabase::MigrationBuilder::setBackwardQueries(const MDatabase::Helpers::Queries &queries)
 {
-    Q_ASSERT_X(m_fackward.empty(), Q_FUNC_INFO, "mForward collection is not empty!");
+    Q_ASSERT_X(m_fackward.empty(), Q_FUNC_INFO, "Forward collection is not empty!");
     m_fackward = queries;
     return std::move(*this);
 }

@@ -6,7 +6,7 @@ namespace MDatabase {
 class ConnectionProviderSQLiteSee : public ConnectionProviderSQLite
 {
 public:
-    static MDatabase::ConnectionProviderSQLiteSee &instance();    
+    static MDatabase::ConnectionProviderSQLiteSee *instance();
 
     void setPassword(const QString& password);
 

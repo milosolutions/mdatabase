@@ -8,10 +8,10 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mdatabase)
 
-MDatabase::ConnectionProviderSQLiteCipher &MDatabase::ConnectionProviderSQLiteCipher::instance()
+MDatabase::ConnectionProviderSQLiteCipher *MDatabase::ConnectionProviderSQLiteCipher::instance()
 {
     static ConnectionProviderSQLiteCipher cp;
-    return cp;
+    return &cp;
 }
 
 void MDatabase::ConnectionProviderSQLiteCipher::setPassword(const QString &password)

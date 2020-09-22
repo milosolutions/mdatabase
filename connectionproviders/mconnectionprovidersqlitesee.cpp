@@ -9,10 +9,10 @@
 
 Q_DECLARE_LOGGING_CATEGORY(mdatabase)
 
-MDatabase::ConnectionProviderSQLiteSee &MDatabase::ConnectionProviderSQLiteSee::instance()
+MDatabase::ConnectionProviderSQLiteSee *MDatabase::ConnectionProviderSQLiteSee::instance()
 {
     static ConnectionProviderSQLiteSee cp;
-    return cp;
+    return &cp;
 }
 
 void MDatabase::ConnectionProviderSQLiteSee::setPassword(const QString &password)
@@ -34,7 +34,8 @@ void MDatabase::ConnectionProviderSQLiteSee::setupConnectionData(const QString &
         createDatabase(databasePath);
     }
 
-    qDebug() << "Creating DB SEE" << m_databaseType << connectionName;
+    qDebug() << "Creating DB SEE" << m_databaseType
+             << baseConnectionName(connectionName);
 
     auto db = createDatabaseConnection(connectionName);
     db.setDatabaseName(databasePath);

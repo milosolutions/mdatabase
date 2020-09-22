@@ -58,7 +58,7 @@ void TestMDatabase::initTestCase()
 
     mDbPath = QStandardPaths::writableLocation(
                     QStandardPaths::AppDataLocation) + "/test.db";
-    MDatabase::ConnectionProviderSQLite::instance().setupConnectionData(mDbPath);
+    MDatabase::ConnectionProviderSQLite::instance()->setupConnectionData(mDbPath);
 
     // SQlite migrations manager
     using SqliteMigrations = MDatabase::MigrationManager<MDatabase::ConnectionProviderSQLite>;

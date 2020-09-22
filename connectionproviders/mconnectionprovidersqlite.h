@@ -6,7 +6,7 @@ namespace MDatabase {
 class ConnectionProviderSQLite : public ConnectionProviderBase
 {
 public:
-    static MDatabase::ConnectionProviderSQLite &instance();
+    static MDatabase::ConnectionProviderSQLite *instance();
 
     virtual void setupConnectionData(
             const QString &databasePath,

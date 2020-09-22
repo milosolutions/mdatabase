@@ -15,36 +15,41 @@ MDatabase::ConnectionProviderBase::ConnectionProviderBase(const QString &databas
 
 bool MDatabase::ConnectionProviderBase::checkPluginAvailable() const
 {
-    return !QSqlDatabase::drivers().filter(m_databaseType).empty();
+    return QSqlDatabase::drivers().contains(m_databaseType);
 }
-
 
 bool MDatabase::ConnectionProviderBase::hasDatabaseConnection(
                                         const QString &connectionName) const
 {
-    return QSqlDatabase::contains(extendedConnectionName(connectionName));
+    return QSqlDatabase::contains(connectionName);
 }
 
 QSqlDatabase MDatabase::ConnectionProviderBase::databaseConnection(
                                         const QString &connectionName) const
 {
     QSqlDatabase db;
-    if (hasDatabaseConnection(connectionName)) {
-        db = QSqlDatabase::database(extendedConnectionName(connectionName));
+    const QString extendedName = extendedConnectionName(connectionName);
+    if (hasDatabaseConnection(extendedName)) {
+        db = QSqlDatabase::database(extendedName);
     } else {
-        Q_ASSERT_X(QSqlDatabase::contains(baseConnectionName(connectionName)),
-                   Q_FUNC_INFO, "Database used before setup!");
+        if (QSqlDatabase::contains(baseConnectionName(connectionName))) {
+            qCWarning(mdatabase) << "Database used before setup!"
+                                 << connectionName;
+        }
 
-        db = QSqlDatabase::cloneDatabase(baseConnectionName(connectionName), 
-                                    extendedConnectionName(connectionName));
+        db = QSqlDatabase::cloneDatabase(baseConnectionName(connectionName),
+                                         extendedName);
     }
 
-    if (!db.isOpen() && !db.open()) {
-        qCCritical(mdatabase) << "Cannot open database connection. Cannot proceed.";
+    if (db.isOpen() == false && db.open() == false) {
+        qCCritical(mdatabase) << "Cannot open database connection. Cannot proceed."
+                              << db.databaseName() << db.connectionName()
+                              << db.driverName();
+        return db;
     }
 
-    qDebug() << "Opened database" << db.databaseName()
-             << db.connectionName() << db.driverName();
+    qCDebug(mdatabase) << "Opened database" << db.databaseName()
+                       << db.connectionName() << db.driverName();
 
     return db;
 }
@@ -70,8 +75,8 @@ QString MDatabase::ConnectionProviderBase::extendedConnectionName(
         return baseConnectionName;
     }
 
-    auto currentThreadIdx = QString("0x%1").arg(
-                        reinterpret_cast<quintptr>(QThread::currentThread()),
-                                    QT_POINTER_SIZE * 2, 16, QChar('0'));
+    const auto currentThreadIdx = QString("0x%1").arg(
+                reinterpret_cast<quintptr>(QThread::currentThread()),
+                QT_POINTER_SIZE * 2, 16, QChar('0'));
     return QString("%1_%2").arg(baseConnectionName, currentThreadIdx);
 }
